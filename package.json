@@ -1,0 +1,45 @@
+{
+  "name": "access-control",
+  "version": "0.0.0",
+  "description": "Easily handle HTTP Access Control (CORS) in your applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha $(find test -name '*.test.js')"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/primus/access-control"
+  },
+  "keywords": [
+    "CORS",
+    "HTTP",
+    "Access",
+    "Control",
+    "Access",
+    "Control",
+    "Allow",
+    "Origin",
+    "Access-Control-Allow-Origin",
+    "Access-Control-Expose-Headers",
+    "Access-Control-Allow-Methods",
+    "Access-Control-Allow-Credentials",
+    "Access-Control-Allow-Headers",
+    "Access-Control-Max-Age"
+  ],
+  "author": "Arnout Kazemier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/primus/access-control/issues"
+  },
+  "homepage": "https://github.com/primus/access-control",
+  "dependencies": {
+    "setheader": "0.0.x",
+    "ms": "~0.6.2"
+  },
+  "devDependencies": {
+    "pre-commit": "0.0.x",
+    "chai": "1.9.x",
+    "mocha": "1.17.x",
+    "request": "2.34.x"
+  }
+}
