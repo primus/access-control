@@ -120,6 +120,7 @@ function access(options) {
       // @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
       //
       res.statusCode = 200;
+      res.setHeader('Content-Length', 0);
       res.end('');
 
       return true;
