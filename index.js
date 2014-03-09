@@ -1,6 +1,7 @@
 'use strict';
 
 var setHeader = require('setheader')
+  , parse = require('url').parse
   , ms = require('ms');
 
 /**
@@ -62,7 +63,8 @@ function access(options) {
    * @api public
    */
   return function control(req, res) {
-    var credentials = options.credentials;
+    var credentials = options.credentials
+      , origin = req.headers.origin;
 
     //
     // The `origin` header WILL always be send for browsers that support CORS.
@@ -72,6 +74,20 @@ function access(options) {
     // @see https://developer.mozilla.org/en/docs/HTTP/Access_control_CORS#Origin
     //
     if (!('origin' in req.headers)) return false;
+
+    //
+    // Validate the current request to ensure that proper headers are being send
+    // and that we don't answer with bullshit.
+    //
+    if (
+         origin.indexOf('%')
+      || (parse(origin)).sheme === null
+    ) {
+      res.statusCode = 403;
+      res.end('');
+
+      return true;
+    }
 
     //
     // GET requests are not preflighted for CORS but the browser WILL reject the
@@ -84,7 +100,7 @@ function access(options) {
       && options.credentials
       && options.origin === '*'
     ) {
-      setHeader(res, 'Access-Control-Allow-Origin', req.headers.origin);
+      setHeader(res, 'Access-Control-Allow-Origin', origin);
     } else {
       setHeader(res, 'Access-Control-Allow-Origin', options.origin);
     }

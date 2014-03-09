@@ -40,6 +40,6 @@
     "pre-commit": "0.0.x",
     "chai": "1.9.x",
     "mocha": "1.17.x",
-    "request": "2.34.x"
+    "request": "~2.34.0"
   }
 }
