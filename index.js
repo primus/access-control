@@ -51,7 +51,7 @@ function access(options) {
   if (Array.isArray(options.methods)) options.methods = options.methods.join(',');
   if (Array.isArray(options.headers)) options.headers = options.headers.join(',');
   if (Array.isArray(options.exposed)) options.exposed = options.exposed.join(',');
-  if ('string' === typeof options.maxAage) options.maxAage = ms(options.maxAage);
+  if ('string' === typeof options.maxAge) options.maxAge = ms(options.maxAge);
 
   /**
    * The actual function that handles the setting of the requests and answering
