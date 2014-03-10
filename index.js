@@ -14,15 +14,15 @@ var setHeader = require('setheader')
 function access(options) {
   options = options || {};
 
-  // The allowed origin of the request.
-  options.origin = 'origin' in options
-    ? options.origin
+  // The allowed origins of the request.
+  options.origins = 'origins' in options
+    ? options.origins
     : '*';
 
   // The allowed methods for the request.
   options.methods = 'methods' in options
     ? options.methods
-    : ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'];
+    : ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'OPTIONS'];
 
   // Allow sending of authorization and cookie information.
   options.credentials = 'credentials' in options
@@ -48,16 +48,16 @@ function access(options) {
   // Be a bit flexible in the way the arguments are supplied, transform Array's
   // in to strings and human readable numbers strings in to numbers.
   //
-  if (Array.isArray(options.methods)) options.methods = options.methods.join(',');
-  if (Array.isArray(options.headers)) options.headers = options.headers.join(',');
-  if (Array.isArray(options.exposed)) options.exposed = options.exposed.join(',');
-  if (Array.isArray(options.origin)) options.origin = options.origin.join(',');
+  ['methods', 'headers', 'exposed', 'origins'].forEach(function cleanup(key) {
+    if (Array.isArray(options[key])) options[key] = options[key].join(',');
+  });
+
   if ('string' === typeof options.maxAage) options.maxAage = ms(options.maxAge);
 
   var methods = options.methods.toUpperCase().split(',')
     , exposes = options.exposed.toLowerCase().split(',')
     , headers = options.headers.toLowerCase().split(',')
-    , origins = options.origin.toLowerCase().split(',');
+    , origins = options.origins.toLowerCase().split(',');
 
   /**
    * The actual function that handles the setting of the requests and answering
@@ -86,9 +86,9 @@ function access(options) {
     // and that we don't answer with bullshit.
     //
     if (
-         origin.indexOf('%')
-      || (parse(origin)).protocol === null
-      || (options.origin !== '*' && !~origins.indexOf(origin))
+         ~origin.indexOf('%')
+      || parse(origin).protocol === null
+      || options.origins !== '*' && !~origins.indexOf(origin)
       || !~methods.indexOf(req.method)
       // @TODO header validation
     ) {
@@ -112,11 +112,11 @@ function access(options) {
     if (
          'GET' === req.method
       && options.credentials
-      && options.origin === '*'
+      && options.origins === '*'
     ) {
       setHeader(res, 'Access-Control-Allow-Origin', origin);
     } else {
-      setHeader(res, 'Access-Control-Allow-Origin', options.origin);
+      setHeader(res, 'Access-Control-Allow-Origin', options.origins);
     }
 
     if (options.credentials) {
