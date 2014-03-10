@@ -37,12 +37,12 @@ function access(options) {
   // The allowed request headers.
   options.headers = 'headers' in options
     ? options.headers
-    : null;
+    : '';
 
   // Server headers exposed to the user agent.
   options.exposed = 'exposed' in options
     ? options.exposed
-    : null;
+    : '';
 
   //
   // Be a bit flexible in the way the arguments are supplied, transform Array's
@@ -51,7 +51,13 @@ function access(options) {
   if (Array.isArray(options.methods)) options.methods = options.methods.join(',');
   if (Array.isArray(options.headers)) options.headers = options.headers.join(',');
   if (Array.isArray(options.exposed)) options.exposed = options.exposed.join(',');
-  if ('string' === typeof options.maxAge) options.maxAge = ms(options.maxAge);
+  if (Array.isArray(options.origin)) options.origin = options.origin.join(',');
+  if ('string' === typeof options.maxAage) options.maxAage = ms(options.maxAge);
+
+  var methods = options.methods.toUpperCase().split(',')
+    , exposes = options.exposed.toLowerCase().split(',')
+    , headers = options.headers.toLowerCase().split(',')
+    , origins = options.origin.toLowerCase().split(',');
 
   /**
    * The actual function that handles the setting of the requests and answering
@@ -63,8 +69,8 @@ function access(options) {
    * @api public
    */
   return function control(req, res) {
-    var credentials = options.credentials
-      , origin = req.headers.origin;
+    var origin = (req.headers.origin || '').toLowerCase().trim()
+      , credentials = options.credentials;
 
     //
     // The `origin` header WILL always be send for browsers that support CORS.
@@ -81,10 +87,18 @@ function access(options) {
     //
     if (
          origin.indexOf('%')
-      || (parse(origin)).sheme === null
+      || (parse(origin)).protocol === null
+      || (options.origin !== '*' && !~origins.indexOf(origin))
+      || !~methods.indexOf(req.method)
+      // @TODO header validation
     ) {
       res.statusCode = 403;
-      res.end('');
+      res.setHeader('Content-Type', 'text/plain');
+      res.end([
+        'Invalid HTTP Access Control (CORS) request:',
+        '  Origin: '+ req.headers.origin,
+        '  Method: '+ req.method
+      ].join('\n'));
 
       return true;
     }
