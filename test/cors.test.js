@@ -49,4 +49,23 @@ describe('access-control', function () {
   });
 
   it('accepts empty origin headers which are send when using datauris');
+
+  it('sets the origin to the Origin header for GET requests with credentials');
+
+  describe('preflight', function () {
+    it('contains a Access-Control-Allow-Origin header');
+    it('only handles preflight when send with Access-Control-Request-Method');
+    it('optionally adds the Access-Control-Max-Age header');
+    it('optionally adds the Access-Control-Allow-Methods header');
+    it('optionally adds the Access-Control-Allow-Headers header');
+    it('returns true when it handled the request');
+    it('answers with a 200 OK');
+  });
+
+  describe('validation', function () {
+    it('only allows valid origin headers');
+    it('only accepts allowed methods');
+    it('only accepts allowed origins');
+    it('only accepts allowed headers');
+  });
 });
