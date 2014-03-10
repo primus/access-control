@@ -52,7 +52,7 @@ function access(options) {
     if (Array.isArray(options[key])) options[key] = options[key].join(',');
   });
 
-  if ('string' === typeof options.maxAage) options.maxAage = ms(options.maxAge);
+  if ('string' === typeof options.maxAge) options.maxAge = ms(options.maxAge);
 
   var methods = options.methods.toUpperCase().split(',')
     , exposes = options.exposed.toLowerCase().split(',')

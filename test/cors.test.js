@@ -83,7 +83,34 @@ describe('access-control', function () {
       });
     });
 
-    it('optionally adds the Access-Control-Max-Age header');
+    it('optionally adds the Access-Control-Max-Age header', function (next) {
+      cors = access({ maxAge: '1 day' });
+
+      server = http.createServer(function (req, res) {
+        if (cors(req, res)) return;
+
+        res.statusCode = 404;
+        res.end('foo');
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          method: 'OPTIONS',
+          headers: {
+            Origin: 'http://example.com',
+            'Access-Control-Request-Method': 'GET'
+          }
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(res.statusCode).to.equal(200);
+          expect(res.headers['access-control-max-age']).to.equal('86400000');
+          expect(body).to.equal('foo');
+
+          next();
+        });
+      });
+    });
+
     it('optionally adds the Access-Control-Allow-Methods header');
     it('optionally adds the Access-Control-Allow-Headers header');
 
