@@ -104,7 +104,6 @@ describe('access-control', function () {
 
           expect(res.statusCode).to.equal(200);
           expect(res.headers['access-control-max-age']).to.equal('86400000');
-          expect(body).to.equal('foo');
 
           next();
         });
