@@ -126,9 +126,15 @@ function access(options) {
     //
     // The HTTP Access Control (CORS) uses the OPTIONS method to preflight
     // requests to it can get approval before doing the actual request. So it's
-    // vital that these requests are handled first and as soon as possible.
+    // vital that these requests are handled first and as soon as possible. But
+    // as OPTIONS requests can also be made for other types of requests need to
+    // explicitly check if the `Access-Control-Request-Method` header has been
+    // sent to ensure that this is a preflight request.
     //
-    if ('OPTIONS' === req.method) {
+    if (
+         'OPTIONS' === req.method
+      && req.headers['access-control-request-method']
+    ) {
       if (options.maxAge) {
         setHeader(res, 'Access-Control-Max-Age', options.maxAge);
       }
@@ -140,7 +146,7 @@ function access(options) {
       if (options.headers) {
         setHeader(res, 'Access-Control-Allow-Headers', options.headers);
       } else if (req.headers['access-control-request-headers']) {
-        setHeader(res, req.headers['access-control-request-headers']);
+        setHeader(res, 'Access-Control-Allow-Headers', req.headers['access-control-request-headers']);
       }
 
       //
