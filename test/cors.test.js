@@ -56,12 +56,88 @@ describe('access-control', function () {
 
   describe('preflight', function () {
     it('contains a Access-Control-Allow-Origin header');
-    it('only handles preflight when send with Access-Control-Request-Method');
+
+    it('only handles preflight when send with Access-Control-Request-Method', function (next) {
+      cors = access();
+
+      server = http.createServer(function (req, res) {
+        expect(cors(req, res)).to.equal(false);
+
+        res.statusCode = 404;
+        res.end('foo');
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          method: 'OPTIONS',
+          headers: {
+            Origin: 'http://example.com',
+          }
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(res.statusCode).to.equal(404);
+          expect(body).to.equal('foo');
+
+          next();
+        });
+      });
+    });
+
     it('optionally adds the Access-Control-Max-Age header');
     it('optionally adds the Access-Control-Allow-Methods header');
     it('optionally adds the Access-Control-Allow-Headers header');
-    it('returns true when it handled the request');
-    it('answers with a 200 OK');
+
+    it('returns true when it handled the request', function (next) {
+      cors = access();
+
+      server = http.createServer(function (req, res) {
+        expect(cors(req, res)).to.equal(true);
+
+        res.statusCode = 404;
+        res.end('foo');
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          method: 'OPTIONS',
+          headers: {
+            Origin: 'http://example.com',
+            'Access-Control-Request-Method': 'GET'
+          }
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(body).to.equal('');
+          expect(+res.headers['content-length']).to.equal(0);
+
+          next();
+        });
+      });
+    });
+
+    it('answers with a 200 OK', function (next) {
+      cors = access();
+
+      server = http.createServer(function (req, res) {
+        if (cors(req, res)) return;
+
+        res.statusCode = 404;
+        res.end('foo');
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          method: 'OPTIONS',
+          headers: {
+            Origin: 'http://example.com',
+            'Access-Control-Request-Method': 'GET'
+          }
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(res.statusCode).to.equal(200);
+          next();
+        });
+      });
+    });
   });
 
   describe('validation', function () {
