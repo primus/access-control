@@ -68,7 +68,8 @@ function access(options) {
    * @api public
    */
   return function control(req, res) {
-    var origin = (req.headers.origin || '').toLowerCase().trim();
+    var origin = (req.headers.origin || '').toLowerCase().trim()
+      , credentials = options.credentials;
 
     //
     // The `origin` header WILL always be send for browsers that support CORS.
