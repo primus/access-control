@@ -55,7 +55,6 @@ function access(options) {
   if ('string' === typeof options.maxAge) options.maxAge = ms(options.maxAge);
 
   var methods = options.methods.toUpperCase().split(',')
-    , exposes = options.exposed.toLowerCase().split(',')
     , headers = options.headers.toLowerCase().split(',')
     , origins = options.origins.toLowerCase().split(',');
 
@@ -69,8 +68,7 @@ function access(options) {
    * @api public
    */
   return function control(req, res) {
-    var origin = (req.headers.origin || '').toLowerCase().trim()
-      , credentials = options.credentials;
+    var origin = (req.headers.origin || '').toLowerCase().trim();
 
     //
     // The `origin` header WILL always be send for browsers that support CORS.
