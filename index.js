@@ -32,7 +32,7 @@ function access(options) {
   // Cache duration of the preflight/OPTIONS request.
   options.maxAge = 'maxAge' in options
     ? options.maxAge
-    : '1 year';
+    : '30 days';
 
   // The allowed request headers.
   options.headers = 'headers' in options
@@ -52,7 +52,12 @@ function access(options) {
     if (Array.isArray(options[key])) options[key] = options[key].join(',');
   });
 
-  if ('string' === typeof options.maxAge) options.maxAge = ms(options.maxAge);
+  //
+  // We need to multiply the value with 1000 in order to get seconds as the `ms`
+  // module transforms it to seconds instead and the maxAge header should have
+  // been in delta seconds instead.
+  //
+  if ('string' === typeof options.maxAge) options.maxAge = ms(options.maxAge) / 1000;
 
   var methods = options.methods.toUpperCase().split(',')
     , headers = options.headers.toLowerCase().split(',')
