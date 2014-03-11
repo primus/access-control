@@ -109,7 +109,7 @@ function access(options) {
     //
     if (
          'GET' === req.method
-      && options.credentials
+      && credentials
       && options.origins === '*'
     ) {
       setHeader(res, 'Access-Control-Allow-Origin', origin);
@@ -117,7 +117,7 @@ function access(options) {
       setHeader(res, 'Access-Control-Allow-Origin', options.origins);
     }
 
-    if (options.credentials) {
+    if (credentials) {
       setHeader(res, 'Access-Control-Allow-Credentials', 'true');
     }
 
