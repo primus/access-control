@@ -86,8 +86,8 @@ function access(options) {
     // and that we don't answer with bullshit.
     //
     if (
-         ~origin.indexOf('%')
-      || parse(origin).protocol === null
+         !!~origin.indexOf('%')
+      || !parse(origin).protocol
       || options.origins !== '*' && !~origins.indexOf(origin)
       || !~methods.indexOf(req.method)
       // @TODO header validation
