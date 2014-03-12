@@ -53,9 +53,8 @@ function access(options) {
   });
 
   //
-  // We need to multiply the value with 1000 in order to get seconds as the `ms`
-  // module transforms it to seconds instead and the maxAge header should have
-  // been in delta seconds instead.
+  // The maxAge header value must be expressed in seconds so we need to convert
+  // the milliseconds returned by the `ms` module in seconds.
   //
   if ('string' === typeof options.maxAge) options.maxAge = ms(options.maxAge) / 1000;
 
