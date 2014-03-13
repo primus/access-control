@@ -7,7 +7,7 @@ var setHeader = require('setheader')
 /**
  * Configure the CORS / Access Control headers.
  *
- * @param {Object} options
+ * @param {Object} options Configuration
  * @returns {Function}
  * @api public
  */
@@ -68,10 +68,11 @@ function access(options) {
    *
    * @param {Request} req The incoming HTTP request.
    * @param {Response} res The outgoing HTTP response.
+   * @param {Function} next Optional callback for middleware support.
    * @returns {Boolean}
    * @api public
    */
-  return function control(req, res) {
+  return function control(req, res, next) {
     var origin = (req.headers.origin || '').toLowerCase().trim()
       , credentials = options.credentials;
 
@@ -82,7 +83,10 @@ function access(options) {
     //
     // @see https://developer.mozilla.org/en/docs/HTTP/Access_control_CORS#Origin
     //
-    if (!('origin' in req.headers)) return false;
+    if (!('origin' in req.headers)) {
+      if ('function' === typeof next) next();
+      return false;
+    }
 
     //
     // Validate the current request to ensure that proper headers are being send
@@ -169,6 +173,7 @@ function access(options) {
       setHeader(res, 'Access-Control-Expose-Headers', options.exposed);
     }
 
+    if ('function' === typeof next) next();
     return false;
   };
 }
