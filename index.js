@@ -117,7 +117,7 @@ function access(options) {
     // thats why we will default to the Origin.
     //
     if (
-         'GET' === req.method
+         (!methods.length || ~methods.indexOf(req.method))
       && credentials
       && options.origins === '*'
     ) {
