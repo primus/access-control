@@ -100,6 +100,14 @@ In order to not waste to much bandwidth, the CORS headers will only be added if
 the request contains an `Origin` header, which should be sent by every request
 that requires HTTP Access Control information.
 
+## Phonegap & Origin: null
+
+If you're using Phonegap your and make XHR requests they will be send with
+Origin: null. In order to resolve this you must add the domain you are
+requesting to your origin white list:
+
+http://docs.phonegap.com/en/1.9.0/guide_whitelist_index.md.html
+
 ## Related reading
 
 If you're interested in learning more about HTTP Access Control (CORS) here's a
