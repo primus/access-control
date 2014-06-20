@@ -102,11 +102,14 @@ that requires HTTP Access Control information.
 
 ## Phonegap & Origin: null
 
-If you're using Phonegap your and make XHR requests they will be send with
-Origin: null. In order to resolve this you must add the domain you are
-requesting to your origin white list:
+If you're using Phonegap your and making XHR requests they will be send with
+`Origin: null` as Origin header. In order to resolve this you must add the 
+domain you are requesting to your origin white list:
 
 http://docs.phonegap.com/en/1.9.0/guide_whitelist_index.md.html
+
+This will ensure that the correct headers for these cross domain/origin
+requests.
 
 ## Related reading
 
