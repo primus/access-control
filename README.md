@@ -1,6 +1,7 @@
 # HTTP Access-Control (CORS)
 
-[![Build Status](https://travis-ci.org/primus/access-control.png?branch=master)](https://travis-ci.org/primus/access-control)
+[![Build Status](https://travis-ci.org/primus/access-control.svg?branch=master)](https://travis-ci.org/primus/access-control)
+[![NPM version](https://badge.fury.io/js/access-control.svg)](http://badge.fury.io/js/access-control)
 
 `access-control` implements HTTP Access Control, which more commonly known as
 CORS according to the W3 specification. The code is dead simple, easy to
@@ -102,14 +103,14 @@ that requires HTTP Access Control information.
 
 ## Phonegap & Origin: null
 
-If you're using Phonegap your and making XHR requests they will be send with
-`Origin: null` as Origin header. In order to resolve this you must add the 
-domain you are requesting to your origin white list:
+If you're using Phonegap, your XHR requests will be sent with `Origin: null` as
+Origin header. In order to resolve this you must add the domain you are
+requesting to your origin white list:
 
 http://docs.phonegap.com/en/1.9.0/guide_whitelist_index.md.html
 
-This will ensure that the correct headers for these cross domain/origin
-requests.
+This will ensure that the correct headers will be used for these cross
+domain/origin requests.
 
 ## Related reading
 
