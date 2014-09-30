@@ -89,11 +89,11 @@ function access(options) {
     }
 
     //
-    // Validate the current request to ensure that proper headers are being send
+    // Validate the current request to ensure that proper headers are being sent
     // and that we don't answer with bullshit.
     //
     if (
-         !!~origin.indexOf('%')
+         ~origin.indexOf('%')
       || !parse(origin).protocol
       || options.origins !== '*' && !~origins.indexOf(origin)
       || !~methods.indexOf(req.method)
@@ -112,18 +112,16 @@ function access(options) {
 
     //
     // GET requests are not preflighted for CORS but the browser WILL reject the
-    // content if it was requested with `withCredentials=true` and the Origin is
-    // set to `*`. So we need set an non `*` Access-Control-Allow-Origin and
-    // thats why we will default to the Origin.
+    // response if the request is made with the `withCredentials` flag enabled
+    // and the `Access-Control-Allow-Origin` header is set to `*`. In addition to
+    // this, if the server specifies an origin host rather than `*`, the it must
+    // be either a SINGLE origin or the string `null`.
     //
-    if (
-         (!methods.length || ~methods.indexOf(req.method))
-      && credentials
-      && options.origins === '*'
-    ) {
+    if (options.origins !== '*' || credentials) {
       setHeader(res, 'Access-Control-Allow-Origin', origin);
+      setHeader(res, 'Vary', 'Origin');
     } else {
-      setHeader(res, 'Access-Control-Allow-Origin', options.origins);
+      setHeader(res, 'Access-Control-Allow-Origin', '*');
     }
 
     if (credentials) {
@@ -131,11 +129,11 @@ function access(options) {
     }
 
     //
-    // The HTTP Access Control (CORS) uses the OPTIONS method to preflight
-    // requests to it can get approval before doing the actual request. So it's
+    // The HTTP Access Control (CORS) uses the OPTIONS method for preflight
+    // requests so it can get approval before doing the actual request. So it's
     // vital that these requests are handled first and as soon as possible. But
-    // as OPTIONS requests can also be made for other types of requests need to
-    // explicitly check if the `Access-Control-Request-Method` header has been
+    // as OPTIONS requests can also be made for other types of requests, we need
+    // to explicitly check if the `Access-Control-Request-Method` header has been
     // sent to ensure that this is a preflight request.
     //
     if (

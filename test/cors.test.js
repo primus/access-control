@@ -9,7 +9,7 @@ describe('access-control', function () {
     , server
     , cors;
 
-  chai.Assertion.includeStack = true;
+  chai.config.includeStack = true;
 
   //
   // Port number for the HTTP server;
@@ -23,7 +23,7 @@ describe('access-control', function () {
     next();
   });
 
-  it('exposes it self as an function', function () {
+  it('exposes itself as an function', function () {
     expect(access).to.be.a('function');
   });
 
@@ -50,7 +50,7 @@ describe('access-control', function () {
     });
   });
 
-  it('accepts empty origin headers which are send when using datauris');
+  it('accepts empty origin headers which are send when using data uris');
 
   it('sets the origin to the Origin header for GET requests with credentials');
 
@@ -237,6 +237,7 @@ describe('access-control', function () {
           expect(body).to.equal('foo');
           expect(res.statusCode).to.equal(200);
           expect(res.headers['access-control-allow-origin']).to.equal('http://example.com');
+          expect(res.headers.vary).to.equal('Origin');
 
           request({
             uri: 'http://localhost:'+ port,
