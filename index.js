@@ -94,7 +94,7 @@ function access(options) {
     //
     if (
          ~origin.indexOf('%')
-      || !parse(origin).protocol
+      || (origin !== 'null' && !parse(origin).protocol)
       || options.origins !== '*' && !~origins.indexOf(origin)
       || !~methods.indexOf(req.method)
       // @TODO header validation

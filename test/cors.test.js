@@ -300,6 +300,33 @@ describe('access-control', function () {
       });
     });
 
+    it('allows Origin: null', function (next) {
+      cors = access();
+
+      server = http.createServer(function (req, res) {
+        if (cors(req, res)) return;
+
+        res.end('foo');
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          headers: {
+            Origin: 'null'
+          },
+          method: 'GET'
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(body).to.equal('foo');
+          expect(res.statusCode).to.equal(200);
+          expect(res.headers['access-control-allow-origin']).to.equal('null');
+          expect(res.headers.vary).to.equal('Origin');
+
+          next();
+        });
+      });
+    });
+
     it('only accepts allowed headers');
 
     it('returns true when invalid responses are handled', function (next) {
