@@ -118,8 +118,8 @@ function access(options) {
     // be either a SINGLE origin or the string `null`.
     //
     if (options.origins !== '*' || credentials) {
-      setHeader(res, 'Access-Control-Allow-Origin', origin);
-      setHeader(res, 'Vary', 'Origin');
+      setHeader(res, 'Access-Control-Allow-Origin', req.headers.origin);
+      res.setHeader('Vary', 'Origin');
     } else {
       setHeader(res, 'Access-Control-Allow-Origin', '*');
     }
