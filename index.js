@@ -145,7 +145,7 @@ function access(options) {
       }
 
       if (options.methods) {
-        setHeader(res, 'Access-Control-Allow-Methods', options.methods);
+        setHeader(res, 'Access-Control-Allow-Methods', methods.join(', '));
       }
 
       if (options.headers) {
