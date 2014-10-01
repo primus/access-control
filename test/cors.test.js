@@ -50,14 +50,66 @@ describe('access-control', function () {
     });
   });
 
-  it('accepts empty origin headers which are send when using data uris');
+  it('accepts empty origin headers which are sent when using data uris');
 
-  it('sets the origin to the Origin header for GET requests with credentials');
+  it('sets the origin to the Origin header for GET requests with credentials', function (next) {
+    cors = access();
+
+    server = http.createServer(function (req, res) {
+      if (cors(req, res)) return;
+
+      res.end('foo');
+    }).listen(++port, function listening() {
+      var origin = 'http://example.com';
+
+      request({
+        uri: 'http://localhost:'+ port,
+        headers: {
+          Origin: origin,
+          Cookie: 'foo=bar'
+        },
+        method: 'GET'
+      }, function (err, res, body) {
+        if (err) return next(err);
+
+        expect(body).to.equal('foo');
+        expect(res.headers['access-control-allow-origin']).to.equal(origin);
+        expect(res.headers['access-control-allow-credentials']).to.equal('true');
+
+        next();
+      });
+    });
+  });
 
   describe('preflight', function () {
-    it('contains a Access-Control-Allow-Origin header');
+    it('contains the Access-Control-Allow-Origin header', function (next) {
+      cors = access({ credentials: false });
 
-    it('only handles preflight when send with Access-Control-Request-Method', function (next) {
+      server = http.createServer(function (req, res) {
+        if (cors(req, res)) return;
+
+        res.statusCode = 404;
+        res.end('foo');
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          method: 'OPTIONS',
+          headers: {
+            Origin: 'http://example.com',
+            'Access-Control-Request-Method': 'PUT'
+          }
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(res.statusCode).to.equal(200);
+          expect(res.headers['access-control-allow-origin']).to.equal('*');
+
+          next();
+        });
+      });
+    });
+
+    it('answers only if the Access-Control-Request-Method header is set', function (next) {
       cors = access();
 
       server = http.createServer(function (req, res) {
@@ -97,7 +149,7 @@ describe('access-control', function () {
           method: 'OPTIONS',
           headers: {
             Origin: 'http://example.com',
-            'Access-Control-Request-Method': 'GET'
+            'Access-Control-Request-Method': 'PUT'
           }
         }, function (err, res, body) {
           if (err) return next(err);
@@ -110,8 +162,60 @@ describe('access-control', function () {
       });
     });
 
-    it('optionally adds the Access-Control-Allow-Methods header');
-    it('optionally adds the Access-Control-Allow-Headers header');
+    it('optionally adds the Access-Control-Allow-Methods header', function (next) {
+      cors = access({ methods: ['PUT', 'OPTIONS'] });
+
+      server = http.createServer(function (req, res) {
+        if (cors(req, res)) return;
+
+        res.statusCode = 404;
+        res.end('foo');
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          method: 'OPTIONS',
+          headers: {
+            Origin: 'http://example.com',
+            'Access-Control-Request-Method': 'PUT'
+          }
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(res.statusCode).to.equal(200);
+          expect(res.headers['access-control-allow-methods']).to.equal('PUT, OPTIONS');
+
+          next();
+        });
+      });
+    });
+
+    it('optionally adds the Access-Control-Allow-Headers header', function (next) {
+      cors = access();
+
+      server = http.createServer(function (req, res) {
+        if (cors(req, res)) return;
+
+        res.statusCode = 404;
+        res.end('foo');
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          method: 'OPTIONS',
+          headers: {
+            Origin: 'http://example.com',
+            'Access-Control-Request-Method': 'PUT',
+            'Access-Control-Request-Headers': 'X-Requested-With'
+          }
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(res.statusCode).to.equal(200);
+          expect(res.headers['access-control-allow-headers']).to.equal('X-Requested-With');
+
+          next();
+        });
+      });
+    });
 
     it('returns true when it handled the request', function (next) {
       cors = access();
@@ -127,7 +231,7 @@ describe('access-control', function () {
           method: 'OPTIONS',
           headers: {
             Origin: 'http://example.com',
-            'Access-Control-Request-Method': 'GET'
+            'Access-Control-Request-Method': 'PUT'
           }
         }, function (err, res, body) {
           if (err) return next(err);
@@ -154,7 +258,7 @@ describe('access-control', function () {
           method: 'OPTIONS',
           headers: {
             Origin: 'http://example.com',
-            'Access-Control-Request-Method': 'GET'
+            'Access-Control-Request-Method': 'PUT'
           }
         }, function (err, res, body) {
           if (err) return next(err);
@@ -329,7 +433,7 @@ describe('access-control', function () {
 
     it('only accepts allowed headers');
 
-    it('returns true when invalid responses are handled', function (next) {
+    it('returns true when invalid requests are handled', function (next) {
       cors = access({
         methods: ['POST']
       });
