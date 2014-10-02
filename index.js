@@ -58,9 +58,9 @@ function access(options) {
   //
   if ('string' === typeof options.maxAge) options.maxAge = ms(options.maxAge) / 1000;
 
-  var methods = options.methods.toUpperCase().split(',')
-    , headers = options.headers.toLowerCase().split(',')
-    , origins = options.origins.toLowerCase().split(',');
+  var methods = options.methods.toUpperCase().split(',').filter(Boolean)
+    , headers = options.headers.toLowerCase().split(',').filter(Boolean)
+    , origins = options.origins.toLowerCase().split(',').filter(Boolean);
 
   /**
    * The actual function that handles the setting of the requests and answering
