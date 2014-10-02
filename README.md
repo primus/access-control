@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/primus/access-control.svg?branch=master)](https://travis-ci.org/primus/access-control)
 [![NPM version](https://badge.fury.io/js/access-control.svg)](http://badge.fury.io/js/access-control)
+[![Coverage Status](https://img.shields.io/coveralls/primus/access-control.svg)](https://coveralls.io/r/primus/access-control?branch=master)
 
 `access-control` implements HTTP Access Control, which more commonly known as
 CORS according to the W3 specification. The code is dead simple, easy to
