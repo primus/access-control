@@ -4,7 +4,8 @@
   "description": "Easily handle HTTP Access Control (CORS) in your applications",
   "main": "index.js",
   "scripts": {
-    "test": "mocha $(find test -name '*.test.js')"
+    "test": "mocha --reporter spec --ui bdd test.js",
+    "coverage": "istanbul cover ./node_modules/.bin/_mocha -- --reporter spec --ui bdd test.js"
   },
   "repository": {
     "type": "git",
@@ -37,9 +38,10 @@
     "ms": "~0.6.2"
   },
   "devDependencies": {
-    "pre-commit": "0.0.x",
     "chai": "1.9.x",
+    "istanbul": "^0.3.2",
     "mocha": "1.21.x",
+    "pre-commit": "0.0.x",
     "request": "2.44.x"
   }
 }
