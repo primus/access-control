@@ -4,8 +4,9 @@
   "description": "Easily handle HTTP Access Control (CORS) in your applications",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec --ui bdd test.js",
-    "coverage": "istanbul cover ./node_modules/.bin/_mocha -- --reporter spec --ui bdd test.js"
+    "coverage": "istanbul cover node_modules/.bin/_mocha -- --reporter spec test.js",
+    "test": "mocha --reporter spec test.js",
+    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- --reporter spec test.js"
   },
   "repository": {
     "type": "git",
@@ -35,11 +36,11 @@
   "homepage": "https://github.com/primus/access-control",
   "dependencies": {
     "setheader": "0.0.x",
-    "ms": "~0.6.2"
+    "ms": "0.6.x"
   },
   "devDependencies": {
     "chai": "1.9.x",
-    "istanbul": "^0.3.2",
+    "istanbul": "0.3.x",
     "mocha": "1.21.x",
     "pre-commit": "0.0.x",
     "request": "2.44.x"
