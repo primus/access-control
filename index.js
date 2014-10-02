@@ -96,7 +96,7 @@ function access(options) {
          ~origin.indexOf('%')
       || (origin !== 'null' && !parse(origin).protocol)
       || options.origins !== '*' && !~origins.indexOf(origin)
-      || !~methods.indexOf(req.method)
+      || (methods.length && !~methods.indexOf(req.method))
       // @TODO header validation
     ) {
       res.statusCode = 403;
