@@ -81,6 +81,113 @@ describe('access-control', function () {
     });
   });
 
+  it('optionally sets the exposed header', function (next) {
+    cors = access({
+      exposed: 'Content-Length'
+    });
+
+    server = http.createServer(function (req, res) {
+      if (cors(req, res)) return;
+
+      res.end('foo');
+    }).listen(++port, function listening() {
+      var origin = 'http://example.com';
+
+      request({
+        uri: 'http://localhost:'+ port,
+        headers: {
+          Origin: origin,
+          Cookie: 'foo=bar'
+        },
+        method: 'GET'
+      }, function (err, res, body) {
+        if (err) return next(err);
+
+        expect(body).to.equal('foo');
+        expect(res.headers['access-control-allow-origin']).to.equal(origin);
+        expect(res.headers['access-control-expose-headers']).to.equal('Content-Length');
+
+        next();
+      });
+    });
+  });
+
+  describe('middleware', function () {
+    it('calls the completion callback when no origin is set', function (next) {
+      cors = access();
+
+      server = http.createServer(function (req, res) {
+        cors(req, res, function next() {
+          res.end('foo');
+        });
+      }).listen(++port, function listening() {
+        request('http://localhost:'+ port, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(body).to.equal('foo');
+          expect(res.headers).to.not.have.property('access-control-allow-origin');
+
+          next();
+        });
+      });
+    });
+
+    it('calls the completion callback when a origin is set', function (next) {
+      cors = access();
+
+      server = http.createServer(function (req, res) {
+        cors(req, res, function () {
+          res.end('foo');
+        });
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          headers: {
+            Origin: 'http://google.com',
+          },
+          method: 'GET'
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(body).to.equal('foo');
+          expect(res.headers['access-control-allow-origin']).to.equal('http://google.com');
+          expect(res.headers['access-control-allow-credentials']).to.equal('true');
+
+          next();
+        });
+      });
+    });
+
+    it('does not call the callback for preflight requests', function (next) {
+      cors = access({ credentials: false });
+
+      server = http.createServer(function (req, res) {
+        cors(req, res, function () {
+          res.statusCode = 404;
+          res.end('foo');
+
+          throw new Error('This should fail hard');
+        });
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          method: 'OPTIONS',
+          headers: {
+            Origin: 'http://example.com',
+            'Access-Control-Request-Method': 'PUT'
+          }
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(res.statusCode).to.equal(200);
+          expect(res.headers['access-control-allow-origin']).to.equal('*');
+
+          next();
+        });
+      });
+    });
+  });
+
   describe('preflight', function () {
     it('contains the Access-Control-Allow-Origin header', function (next) {
       cors = access({ credentials: false });
@@ -156,6 +263,33 @@ describe('access-control', function () {
 
           expect(res.statusCode).to.equal(200);
           expect(res.headers['access-control-max-age']).to.equal('86400');
+
+          next();
+        });
+      });
+    });
+
+    it('optionally adds the Access-Control-Allow-Headers header', function (next) {
+      cors = access({ headers: ['Content-Length', 'User-Agent'] });
+
+      server = http.createServer(function (req, res) {
+        if (cors(req, res)) return;
+
+        res.statusCode = 404;
+        res.end('foo');
+      }).listen(++port, function listening() {
+        request({
+          uri: 'http://localhost:'+ port,
+          method: 'OPTIONS',
+          headers: {
+            Origin: 'http://example.com',
+            'Access-Control-Request-Method': 'PUT'
+          }
+        }, function (err, res, body) {
+          if (err) return next(err);
+
+          expect(res.statusCode).to.equal(200);
+          expect(res.headers['access-control-allow-headers']).to.equal('Content-Length, User-Agent');
 
           next();
         });

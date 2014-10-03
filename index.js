@@ -49,18 +49,20 @@ function access(options) {
   // in to strings and human readable numbers strings in to numbers.
   //
   ['methods', 'headers', 'exposed', 'origins'].forEach(function cleanup(key) {
-    if (Array.isArray(options[key])) options[key] = options[key].join(',');
+    if (Array.isArray(options[key])) options[key] = options[key].join(', ');
   });
 
   //
   // The maxAge header value must be expressed in seconds so we need to convert
   // the milliseconds returned by the `ms` module in seconds.
   //
-  if ('string' === typeof options.maxAge) options.maxAge = ms(options.maxAge) / 1000;
+  if ('string' === typeof options.maxAge) {
+    options.maxAge = ms(options.maxAge) / 1000;
+  }
 
-  var methods = options.methods.toUpperCase().split(',').filter(Boolean)
-    , headers = options.headers.toLowerCase().split(',').filter(Boolean)
-    , origins = options.origins.toLowerCase().split(',').filter(Boolean);
+  var methods = options.methods.toUpperCase().split(/[\,|\s]+/).filter(Boolean)
+    , headers = options.headers.toLowerCase().split(/[\,|\s]+/).filter(Boolean)
+    , origins = options.origins.toLowerCase().split(/[\,|\s]+/).filter(Boolean);
 
   /**
    * The actual function that handles the setting of the requests and answering
