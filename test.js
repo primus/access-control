@@ -1,3 +1,4 @@
+/* istanbul ignore next */
 describe('access-control', function () {
   'use strict';
 
