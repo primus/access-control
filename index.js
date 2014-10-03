@@ -60,10 +60,10 @@ function access(options) {
     options.maxAge = ms(options.maxAge) / 1000;
   }
 
-  var re = /[, ]+/
-    , methods = options.methods.toUpperCase().split(re).filter(Boolean)
-    , headers = options.headers.toLowerCase().split(re).filter(Boolean)
-    , origins = options.origins.toLowerCase().split(re).filter(Boolean);
+  var separator = /[, ]+/
+    , methods = options.methods.toUpperCase().split(separator).filter(Boolean)
+    , headers = options.headers.toLowerCase().split(separator).filter(Boolean)
+    , origins = options.origins.toLowerCase().split(separator).filter(Boolean);
 
   /**
    * The actual function that handles the setting of the requests and answering
