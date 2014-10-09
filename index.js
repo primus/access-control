@@ -2,6 +2,7 @@
 
 var setHeader = require('setheader')
   , parse = require('url').parse
+  , vary = require('vary')
   , ms = require('ms');
 
 /**
@@ -122,7 +123,7 @@ function access(options) {
     //
     if (options.origins !== '*' || credentials) {
       setHeader(res, 'Access-Control-Allow-Origin', req.headers.origin);
-      res.setHeader('Vary', 'Origin');
+      vary(res, 'Origin');
     } else {
       setHeader(res, 'Access-Control-Allow-Origin', '*');
     }

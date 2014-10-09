@@ -35,8 +35,9 @@
   },
   "homepage": "https://github.com/primus/access-control",
   "dependencies": {
+    "ms": "0.6.x",
     "setheader": "0.0.x",
-    "ms": "0.6.x"
+    "vary": "1.0.x"
   },
   "devDependencies": {
     "chai": "1.9.x",
