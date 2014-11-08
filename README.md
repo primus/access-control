@@ -1,8 +1,6 @@
 # HTTP Access-Control (CORS)
 
-[![Build Status](https://travis-ci.org/primus/access-control.svg?branch=master)](https://travis-ci.org/primus/access-control)
-[![NPM version](https://badge.fury.io/js/access-control.svg)](http://badge.fury.io/js/access-control)
-[![Coverage Status](https://img.shields.io/coveralls/primus/access-control.svg)](https://coveralls.io/r/primus/access-control?branch=master)
+[![Version npm](http://img.shields.io/npm/v/access-control.svg?style=flat-square)](http://browsenpm.org/package/access-control)[![Build Status](http://img.shields.io/travis/primus/access-control/master.svg?style=flat-square)](https://travis-ci.org/primus/access-control)[![Dependencies](https://img.shields.io/david/primus/access-control.svg?style=flat-square)](https://david-dm.org/primus/access-control)[![Coverage Status](http://img.shields.io/coveralls/primus/access-control/master.svg?style=flat-square)](https://coveralls.io/r/primus/access-control?branch=master)[![IRC channel](http://img.shields.io/badge/IRC-irc.freenode.net%23primus-00a8ff.svg?style=flat-square)](http://webchat.freenode.net/?channels=primus)
 
 `access-control` implements HTTP Access Control, which more commonly known as
 CORS according to the W3 specification. The code is dead simple, easy to
