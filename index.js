@@ -77,9 +77,6 @@ function access(options) {
    * @api public
    */
   return function control(req, res, next) {
-    var origin = (req.headers.origin || '').toLowerCase().trim()
-      , credentials = options.credentials;
-
     //
     // The `origin` header WILL always be send for browsers that support CORS.
     // If it's in the request headers, we should not be sending the headers as
@@ -87,10 +84,13 @@ function access(options) {
     //
     // @see https://developer.mozilla.org/en/docs/HTTP/Access_control_CORS#Origin
     //
-    if (!('origin' in req.headers)) {
-      if ('function' === typeof next) next();
-      return false;
-    }
+    // This seemed like a good idea at first until we've found out that
+    // browsers will block stack traces from scripts that are loaded from
+    // a different domain unless they send an Access-Control-Allowed header. So
+    // even if there is no Origin header, we still need to write the headers.
+    //
+    var origin = (req.headers.origin || '').toLowerCase().trim()
+      , credentials = options.credentials;
 
     //
     // Validate the current request to ensure that proper headers are being sent
@@ -98,7 +98,7 @@ function access(options) {
     //
     if (
          ~origin.indexOf('%')
-      || (origin !== 'null' && !parse(origin).protocol)
+      || (origin !== 'null' && origin !== '' && !parse(origin).protocol)
       || options.origins !== '*' && !~origins.indexOf(origin)
       || (methods.length && !~methods.indexOf(req.method))
       // @TODO header validation
@@ -122,13 +122,13 @@ function access(options) {
     // be either a SINGLE origin or the string `null`.
     //
     if (options.origins !== '*' || credentials) {
-      setHeader(res, 'Access-Control-Allow-Origin', req.headers.origin);
+      setHeader(res, 'Access-Control-Allow-Origin', req.headers.origin || origins.join(','));
       vary(res, 'Origin');
     } else {
       setHeader(res, 'Access-Control-Allow-Origin', '*');
     }
 
-    if (credentials) {
+    if (credentials && origin) {
       setHeader(res, 'Access-Control-Allow-Credentials', 'true');
     }
 
