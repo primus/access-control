@@ -1,6 +1,6 @@
 {
   "name": "access-control",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Easily handle HTTP Access Control (CORS) in your applications",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/primus/access-control",
   "dependencies": {
-    "ms": "0.6.x",
+    "millisecond": "0.0.x",
     "setheader": "0.0.x",
     "vary": "1.0.x"
   },

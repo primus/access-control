@@ -2,8 +2,8 @@
 
 var setHeader = require('setheader')
   , parse = require('url').parse
-  , vary = require('vary')
-  , ms = require('ms');
+  , ms = require('millisecond')
+  , vary = require('vary');
 
 /**
  * Configure the CORS / Access Control headers.
@@ -55,7 +55,7 @@ function access(options) {
 
   //
   // The maxAge header value must be expressed in seconds so we need to convert
-  // the milliseconds returned by the `ms` module in seconds.
+  // the milliseconds returned by the `millisecond` module in seconds.
   //
   if ('string' === typeof options.maxAge) {
     options.maxAge = ms(options.maxAge) / 1000;
