@@ -35,15 +35,15 @@
   },
   "homepage": "https://github.com/primus/access-control",
   "dependencies": {
-    "millisecond": "0.0.x",
+    "millisecond": "0.1.x",
     "setheader": "0.0.x",
     "vary": "1.0.x"
   },
   "devDependencies": {
-    "chai": "2.0.x",
+    "chai": "3.0.x",
     "istanbul": "0.3.x",
-    "mocha": "2.1.x",
+    "mocha": "2.2.x",
     "pre-commit": "1.0.x",
-    "request": "2.53.x"
+    "request": "2.58.x"
   }
 }
