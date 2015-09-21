@@ -4,9 +4,9 @@
   "description": "Easily handle HTTP Access Control (CORS) in your applications",
   "main": "index.js",
   "scripts": {
-    "coverage": "istanbul cover node_modules/.bin/_mocha -- test.js",
+    "coverage": "istanbul cover _mocha -- test.js",
     "test": "mocha test.js",
-    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- test.js"
+    "test-travis": "istanbul cover _mocha --report lcovonly -- test.js"
   },
   "repository": {
     "type": "git",
@@ -40,10 +40,10 @@
     "vary": "1.0.x"
   },
   "devDependencies": {
-    "chai": "3.0.x",
+    "chai": "3.3.x",
     "istanbul": "0.3.x",
-    "mocha": "2.2.x",
-    "pre-commit": "1.0.x",
-    "request": "2.58.x"
+    "mocha": "2.3.x",
+    "pre-commit": "1.1.x",
+    "request": "2.62.x"
   }
 }
