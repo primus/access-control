@@ -37,13 +37,13 @@
   "dependencies": {
     "millisecond": "0.1.x",
     "setheader": "0.0.x",
-    "vary": "1.0.x"
+    "vary": "1.1.x"
   },
   "devDependencies": {
-    "chai": "3.3.x",
-    "istanbul": "0.3.x",
+    "chai": "3.4.x",
+    "istanbul": "0.4.x",
     "mocha": "2.3.x",
     "pre-commit": "1.1.x",
-    "request": "2.62.x"
+    "request": "2.67.x"
   }
 }
