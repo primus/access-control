@@ -32,7 +32,7 @@ describe('access-control', function () {
     expect(access()).to.be.a('function');
   });
 
-  it('does not send Access-* headers if the origin header is missing', function (next) {
+  it('does send Access-* headers if the origin header is missing', function (next) {
     cors = access();
 
     server = http.createServer(function (req, res) {
@@ -44,7 +44,8 @@ describe('access-control', function () {
         if (err) return next(err);
 
         expect(body).to.equal('foo');
-        expect(res.headers).to.not.have.property('access-control-allow-origin');
+        expect(res.headers).to.have.property('access-control-allow-origin');
+        expect(res.headers['access-control-allow-origin']).equals('*');
 
         next();
       });
@@ -114,25 +115,6 @@ describe('access-control', function () {
   });
 
   describe('middleware', function () {
-    it('calls the completion callback when no origin is set', function (next) {
-      cors = access();
-
-      server = http.createServer(function (req, res) {
-        cors(req, res, function next() {
-          res.end('foo');
-        });
-      }).listen(++port, function listening() {
-        request('http://localhost:'+ port, function (err, res, body) {
-          if (err) return next(err);
-
-          expect(body).to.equal('foo');
-          expect(res.headers).to.not.have.property('access-control-allow-origin');
-
-          next();
-        });
-      });
-    });
-
     it('calls the completion callback when a origin is set', function (next) {
       cors = access();
 
@@ -434,20 +416,7 @@ describe('access-control', function () {
             if (err) return next(err);
 
             expect(res.statusCode).to.equal(403);
-
-            request({
-              uri: 'http://localhost:'+ port,
-              headers: {
-                Origin: ''
-              },
-              method: 'GET'
-            }, function (err, res, body) {
-              if (err) return next(err);
-
-              expect(res.statusCode).to.equal(403);
-
-              next();
-            });
+            next();
           });
         });
       });
