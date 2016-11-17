@@ -40,10 +40,10 @@
     "vary": "1.1.x"
   },
   "devDependencies": {
-    "chai": "~3.5.0",
+    "chai": "3.5.x",
     "istanbul": "0.4.x",
-    "mocha": "~3.1.2",
+    "mocha": "3.1.x",
     "pre-commit": "1.1.x",
-    "request": "~2.78.0"
+    "request": "2.78.x"
   }
 }
