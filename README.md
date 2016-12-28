@@ -100,6 +100,19 @@ In order to not waste to much bandwidth, the CORS headers will only be added if
 the request contains an `Origin` header, which should be sent by every request
 that requires HTTP Access Control information.
 
+## middleware
+
+The library has build-in support for express based middleware (req, res, next).
+In fact, it's build in to the returned function so all you need to do is:
+
+```js
+var app = express();
+
+app.use(require('access-control')({ /* options here */ }));
+```
+
+And you have CORS handling enabled on your express instance. It's that easy.
+
 ## Phonegap & Origin: null
 
 If you're using Phonegap, your XHR requests will be sent with `Origin: null` as
