@@ -3,14 +3,11 @@ describe('access-control', function () {
   'use strict';
 
   var request = require('request')
+    , assume = require('assume')
     , access = require('./')
     , http = require('http')
-    , chai = require('chai')
-    , expect = chai.expect
     , server
     , cors;
-
-  chai.config.includeStack = true;
 
   //
   // Port number for the HTTP server;
@@ -25,11 +22,11 @@ describe('access-control', function () {
   });
 
   it('exposes itself as an function', function () {
-    expect(access).to.be.a('function');
+    assume(access).is.a('function');
   });
 
   it('returns a function after configuring', function () {
-    expect(access()).to.be.a('function');
+    assume(access()).is.a('function');
   });
 
   it('does not send Access-* headers if the origin header is missing', function (next) {
@@ -43,8 +40,8 @@ describe('access-control', function () {
       request('http://localhost:'+ port, function (err, res, body) {
         if (err) return next(err);
 
-        expect(body).to.equal('foo');
-        expect(res.headers).to.not.have.property('access-control-allow-origin');
+        assume(body).to.equal('foo');
+        assume(res.headers).to.not.have.property('access-control-allow-origin');
 
         next();
       });
@@ -73,9 +70,9 @@ describe('access-control', function () {
       }, function (err, res, body) {
         if (err) return next(err);
 
-        expect(body).to.equal('foo');
-        expect(res.headers['access-control-allow-origin']).to.equal(origin);
-        expect(res.headers['access-control-allow-credentials']).to.equal('true');
+        assume(body).to.equal('foo');
+        assume(res.headers['access-control-allow-origin']).to.equal(origin);
+        assume(res.headers['access-control-allow-credentials']).to.equal('true');
 
         next();
       });
@@ -104,9 +101,9 @@ describe('access-control', function () {
       }, function (err, res, body) {
         if (err) return next(err);
 
-        expect(body).to.equal('foo');
-        expect(res.headers['access-control-allow-origin']).to.equal(origin);
-        expect(res.headers['access-control-expose-headers']).to.equal('Content-Length');
+        assume(body).to.equal('foo');
+        assume(res.headers['access-control-allow-origin']).to.equal(origin);
+        assume(res.headers['access-control-expose-headers']).to.equal('Content-Length');
 
         next();
       });
@@ -125,8 +122,8 @@ describe('access-control', function () {
         request('http://localhost:'+ port, function (err, res, body) {
           if (err) return next(err);
 
-          expect(body).to.equal('foo');
-          expect(res.headers).to.not.have.property('access-control-allow-origin');
+          assume(body).to.equal('foo');
+          assume(res.headers).to.not.have.property('access-control-allow-origin');
 
           next();
         });
@@ -150,9 +147,9 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(body).to.equal('foo');
-          expect(res.headers['access-control-allow-origin']).to.equal('http://google.com');
-          expect(res.headers['access-control-allow-credentials']).to.equal('true');
+          assume(body).to.equal('foo');
+          assume(res.headers['access-control-allow-origin']).to.equal('http://google.com');
+          assume(res.headers['access-control-allow-credentials']).to.equal('true');
 
           next();
         });
@@ -180,8 +177,8 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(res.statusCode).to.equal(200);
-          expect(res.headers['access-control-allow-origin']).to.equal('*');
+          assume(res.statusCode).to.equal(200);
+          assume(res.headers['access-control-allow-origin']).to.equal('*');
 
           next();
         });
@@ -209,8 +206,8 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(res.statusCode).to.equal(200);
-          expect(res.headers['access-control-allow-origin']).to.equal('*');
+          assume(res.statusCode).to.equal(200);
+          assume(res.headers['access-control-allow-origin']).to.equal('*');
 
           next();
         });
@@ -221,7 +218,7 @@ describe('access-control', function () {
       cors = access();
 
       server = http.createServer(function (req, res) {
-        expect(cors(req, res)).to.equal(false);
+        assume(cors(req, res)).is.false();
 
         res.statusCode = 404;
         res.end('foo');
@@ -235,8 +232,8 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(res.statusCode).to.equal(404);
-          expect(body).to.equal('foo');
+          assume(res.statusCode).to.equal(404);
+          assume(body).to.equal('foo');
 
           next();
         });
@@ -262,8 +259,8 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(res.statusCode).to.equal(200);
-          expect(res.headers['access-control-max-age']).to.equal('86400');
+          assume(res.statusCode).to.equal(200);
+          assume(res.headers['access-control-max-age']).to.equal('86400');
 
           next();
         });
@@ -289,8 +286,8 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(res.statusCode).to.equal(200);
-          expect(res.headers['access-control-allow-headers']).to.equal('Content-Length, User-Agent');
+          assume(res.statusCode).to.equal(200);
+          assume(res.headers['access-control-allow-headers']).to.equal('Content-Length, User-Agent');
 
           next();
         });
@@ -316,8 +313,8 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(res.statusCode).to.equal(200);
-          expect(res.headers['access-control-allow-methods']).to.equal('PUT, OPTIONS');
+          assume(res.statusCode).to.equal(200);
+          assume(res.headers['access-control-allow-methods']).to.equal('PUT, OPTIONS');
 
           next();
         });
@@ -344,8 +341,8 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(res.statusCode).to.equal(200);
-          expect(res.headers['access-control-allow-headers']).to.equal('X-Requested-With');
+          assume(res.statusCode).to.equal(200);
+          assume(res.headers['access-control-allow-headers']).to.equal('X-Requested-With');
 
           next();
         });
@@ -356,7 +353,7 @@ describe('access-control', function () {
       cors = access();
 
       server = http.createServer(function (req, res) {
-        expect(cors(req, res)).to.equal(true);
+        assume(cors(req, res)).is.true();
 
         res.statusCode = 404;
         res.end('foo');
@@ -371,8 +368,8 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(body).to.equal('');
-          expect(+res.headers['content-length']).to.equal(0);
+          assume(body).to.equal('');
+          assume(+res.headers['content-length']).to.equal(0);
 
           next();
         });
@@ -398,7 +395,7 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(res.statusCode).to.equal(200);
+          assume(res.statusCode).to.equal(200);
           next();
         });
       });
@@ -422,7 +419,7 @@ describe('access-control', function () {
           method: 'GET'
         }, function (err, res, body) {
           if (err) return next(err);
-          expect(res.statusCode).to.equal(403);
+          assume(res.statusCode).to.equal(403);
 
           request({
             uri: 'http://localhost:'+ port,
@@ -433,7 +430,7 @@ describe('access-control', function () {
           }, function (err, res, body) {
             if (err) return next(err);
 
-            expect(res.statusCode).to.equal(403);
+            assume(res.statusCode).to.equal(403);
 
             request({
               uri: 'http://localhost:'+ port,
@@ -444,7 +441,7 @@ describe('access-control', function () {
             }, function (err, res, body) {
               if (err) return next(err);
 
-              expect(res.statusCode).to.equal(403);
+              assume(res.statusCode).to.equal(403);
 
               next();
             });
@@ -473,10 +470,10 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(body).to.equal('foo');
-          expect(res.statusCode).to.equal(200);
-          expect(res.headers['access-control-allow-origin']).to.equal('http://example.com');
-          expect(res.headers.vary).to.equal('Origin');
+          assume(body).to.equal('foo');
+          assume(res.statusCode).to.equal(200);
+          assume(res.headers['access-control-allow-origin']).to.equal('http://example.com');
+          assume(res.headers.vary).to.equal('Origin');
 
           request({
             uri: 'http://localhost:'+ port,
@@ -487,8 +484,8 @@ describe('access-control', function () {
           }, function (err, res, body) {
             if (err) return next(err);
 
-            expect(res.statusCode).to.equal(403);
-            expect(res.headers).to.not.have.property('access-control-allow-origin');
+            assume(res.statusCode).to.equal(403);
+            assume(res.headers).to.not.have.property('access-control-allow-origin');
 
             next();
           });
@@ -516,9 +513,9 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(body).to.equal('foo');
-          expect(res.statusCode).to.equal(200);
-          expect(res.headers['access-control-allow-origin']).to.equal('*');
+          assume(body).to.equal('foo');
+          assume(res.statusCode).to.equal(200);
+          assume(res.headers['access-control-allow-origin']).to.equal('*');
 
           request({
             uri: 'http://localhost:'+ port,
@@ -530,8 +527,8 @@ describe('access-control', function () {
           }, function (err, res, body) {
             if (err) return next(err);
 
-            expect(res.statusCode).to.equal(403);
-            expect(res.headers).to.not.have.property('access-control-allow-origin');
+            assume(res.statusCode).to.equal(403);
+            assume(res.headers).to.not.have.property('access-control-allow-origin');
 
             next();
           });
@@ -556,10 +553,10 @@ describe('access-control', function () {
         }, function (err, res, body) {
           if (err) return next(err);
 
-          expect(body).to.equal('foo');
-          expect(res.statusCode).to.equal(200);
-          expect(res.headers['access-control-allow-origin']).to.equal('null');
-          expect(res.headers.vary).to.equal('Origin');
+          assume(body).to.equal('foo');
+          assume(res.statusCode).to.equal(200);
+          assume(res.headers['access-control-allow-origin']).to.equal('null');
+          assume(res.headers.vary).to.equal('Origin');
 
           next();
         });
@@ -574,7 +571,7 @@ describe('access-control', function () {
       });
 
       server = http.createServer(function (req, res) {
-        expect(cors(req, res)).to.equal(true);
+        assume(cors(req, res)).is.true();
         res.end('foo');
       }).listen(++port, function listening() {
         request({
@@ -584,7 +581,7 @@ describe('access-control', function () {
           },
           method: 'GET'
         }, function (err, res, body) {
-          expect(res.statusCode).to.equal(403);
+          assume(res.statusCode).to.equal(403);
           next();
         });
       });
