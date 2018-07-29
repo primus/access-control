@@ -1,6 +1,6 @@
 {
   "name": "access-control",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easily handle HTTP Access Control (CORS) in your applications",
   "main": "index.js",
   "scripts": {
