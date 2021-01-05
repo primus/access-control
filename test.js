@@ -354,9 +354,6 @@ describe('access-control', function () {
 
       server = http.createServer(function (req, res) {
         assume(cors(req, res)).is.true();
-
-        res.statusCode = 404;
-        res.end('foo');
       }).listen(++port, function listening() {
         request({
           uri: 'http://localhost:'+ port,
@@ -572,7 +569,6 @@ describe('access-control', function () {
 
       server = http.createServer(function (req, res) {
         assume(cors(req, res)).is.true();
-        res.end('foo');
       }).listen(++port, function listening() {
         request({
           uri: 'http://localhost:'+ port,
