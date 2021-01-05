@@ -40,9 +40,9 @@
     "vary": "~1.1.0"
   },
   "devDependencies": {
-    "assume": "~2.2.0",
+    "assume": "~2.3.0",
     "istanbul": "~0.4.5",
-    "mocha": "~7.2.0",
+    "mocha": "~8.2.1",
     "pre-commit": "~1.2.0",
     "request": "~2.88.0"
   }
