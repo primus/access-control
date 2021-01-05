@@ -4,7 +4,7 @@
   "description": "Easily handle HTTP Access Control (CORS) in your applications",
   "main": "index.js",
   "scripts": {
-    "test": "c8 --reporter=html --reporter=text mocha test.js"
+    "test": "c8 --reporter=lcov --reporter=text mocha test.js"
   },
   "repository": {
     "type": "git",
