@@ -1,6 +1,6 @@
 # HTTP Access-Control (CORS)
 
-[![Version npm](https://img.shields.io/npm/v/access-control.svg?style=flat-square)](https://www.npmjs.com/package/access-control)[![Build Status](https://img.shields.io/github/workflow/status/primus/access-control/CI/master?label=CI&style=flat-square)](https://github.com/primus/access-control/actions?query=workflow%3ACI+branch%3Amaster)[![Dependencies](https://img.shields.io/david/primus/access-control.svg?style=flat-square)](https://david-dm.org/primus/access-control)[![Coverage Status](http://img.shields.io/coveralls/primus/access-control/master.svg?style=flat-square)](https://coveralls.io/r/primus/access-control?branch=master)[![IRC channel](http://img.shields.io/badge/IRC-irc.freenode.net%23primus-00a8ff.svg?style=flat-square)](http://webchat.freenode.net/?channels=primus)
+[![Version npm](https://img.shields.io/npm/v/access-control.svg?style=flat-square)](https://www.npmjs.com/package/access-control)[![Build Status](https://img.shields.io/github/workflow/status/primus/access-control/CI/master?label=CI&style=flat-square)](https://github.com/primus/access-control/actions?query=workflow%3ACI+branch%3Amaster)[![Coverage Status](http://img.shields.io/coveralls/primus/access-control/master.svg?style=flat-square)](https://coveralls.io/r/primus/access-control?branch=master)
 
 `access-control` implements HTTP Access Control, which more commonly known as
 CORS according to the W3 specification. The code is dead simple, easy to
