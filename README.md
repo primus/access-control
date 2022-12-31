@@ -1,6 +1,6 @@
 # HTTP Access-Control (CORS)
 
-[![Version npm](https://img.shields.io/npm/v/access-control.svg?style=flat-square)](https://www.npmjs.com/package/access-control)[![Build Status](https://img.shields.io/github/workflow/status/primus/access-control/CI/master?label=CI&style=flat-square)](https://github.com/primus/access-control/actions?query=workflow%3ACI+branch%3Amaster)[![Coverage Status](http://img.shields.io/coveralls/primus/access-control/master.svg?style=flat-square)](https://coveralls.io/r/primus/access-control?branch=master)
+[![Version npm](https://img.shields.io/npm/v/access-control.svg?style=flat-square)](https://www.npmjs.com/package/access-control)[![CI](https://img.shields.io/github/actions/workflow/status/primus/access-control/ci.yml?branch=master&label=CI&style=flat-square)](https://github.com/primus/access-control/actions?query=workflow%3ACI+branch%3Amaster)[![Coverage Status](http://img.shields.io/coveralls/primus/access-control/master.svg?style=flat-square)](https://coveralls.io/r/primus/access-control?branch=master)
 
 `access-control` implements HTTP Access Control, which more commonly known as
 CORS according to the W3 specification. The code is dead simple, easy to
